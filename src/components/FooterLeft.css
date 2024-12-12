@@ -1,0 +1,56 @@
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 60px;
+}
+
+.footer-left {
+  position: relative;
+  color: white;
+  flex-grow: 1;
+  pointer-events: none;
+  display: flex;
+  margin-left: 5px;
+}
+
+.ticker {
+  height: -90px; /* Đặt chiều cao cố định */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden; /* Ẩn phần tràn */
+}
+
+.ticker marquee {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  white-space: nowrap; /* Ngăn chữ xuống dòng */
+  padding-left: 10px; /* Thêm khoảng cách với biểu tượng nhạc */
+}
+
+.ticker svg {
+  flex-shrink: 0; /* Ngăn icon co lại */
+  margin-right: 10px; /* Thêm khoảng cách giữa icon và chữ */
+}
+
+.text {
+  width: 100%;
+}
+
+.text h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.text p {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.text span {
+  font-size: 12px;
+  font-weight: 400;
+  color: #fff;
+}
