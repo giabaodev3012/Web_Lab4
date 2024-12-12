@@ -20,16 +20,18 @@ function FooterRight({
   profilePic,
   isMuted,
   onMuteToggle,
+  url, // Nhận URL video từ props
 }) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [userAddIcon, setUserAddIcon] = useState(faCirclePlus);
+  const [copied, setCopied] = useState(false); // Thêm state để theo dõi trạng thái sao chép
 
   const handleUserAddClick = () => {
     setUserAddIcon(faCircleCheck);
     setTimeout(() => {
       setUserAddIcon(null);
-    }, 3000); // Change the delay time (in milliseconds) as needed
+    }, 3000);
   };
 
   const parseLikesCount = (count) => {
@@ -54,7 +56,10 @@ function FooterRight({
   };
 
   const handleSaveClick = () => {
-    setSaved((prevSaved) => !prevSaved);
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true); // Đánh dấu là đã sao chép
+      setTimeout(() => setCopied(false), 2000); // Reset trạng thái sau 2 giây
+    });
   };
 
   return (
@@ -104,7 +109,7 @@ function FooterRight({
           }}
           onClick={handleSaveClick}
         />
-        <p>{saves + (saved ? 1 : 0)}</p>
+        <p>{copied ? "Copied!" : saves + (saved ? 1 : 0)}</p>
       </div>
       <div className="sidebar-icon">
         <FontAwesomeIcon
