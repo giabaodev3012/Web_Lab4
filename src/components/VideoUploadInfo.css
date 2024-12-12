@@ -1,0 +1,33 @@
+.video-upload-info {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+
+.video-upload-info.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-content h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+}
+
+.info-content p {
+  margin: 2px 0;
+  font-size: 0.9em;
+}
