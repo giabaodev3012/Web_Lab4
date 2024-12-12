@@ -19,7 +19,7 @@ const videoUrls = [
   },
   {
     url: require("./videos/video2.mp4"),
-    profilePic: require("./photos/meomeo1.jpg"),
+    profilePic: require("./photos/meomeo2.jpg"),
     username: "dailydotdev",
     description:
       "Every developer brain @francesco.ciulla #developerjokes #programming #programminghumor #programmingmemes",
@@ -58,30 +58,63 @@ const videoUrls = [
 ];
 
 function App() {
-  const [videos, setVideos] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const videoRefs = useRef([]);
 
+  // Hàm điều hướng video - gộp chung logic điều hướng
+  const handleNavigation = (direction) => {
+    setCurrentIndex((prevIndex) => {
+      const newIndex =
+        direction === "next"
+          ? Math.min(prevIndex + 1, videoUrls.length - 1)
+          : Math.max(prevIndex - 1, 0);
+
+      // Cuộn tới video mới
+      videoRefs.current[newIndex]?.scrollIntoView({ behavior: "smooth" });
+      return newIndex;
+    });
+  };
+
+  // Xử lý sự kiện di chuột
   useEffect(() => {
-    setVideos(videoUrls);
+    let startY = 0;
+
+    const handleMouseDown = (e) => {
+      startY = e.clientY;
+    };
+
+    const handleMouseUp = (e) => {
+      const endY = e.clientY;
+      const diffY = startY - endY;
+
+      // Điều kiện vuốt: khoảng cách > 100px
+      if (Math.abs(diffY) > 100) {
+        handleNavigation(diffY > 0 ? "next" : "prev");
+      }
+    };
+
+    // Thêm sự kiện
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    // Dọn dẹp sự kiện
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
   }, []);
 
+  // Observe video intersection (giữ nguyên logic cũ)
   useEffect(() => {
     const observerOptions = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.8, // Adjust this value to change the scroll trigger point
+      threshold: 0.8,
     };
 
-    // This function handles the intersection of videos
     const handleIntersection = (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const videoElement = entry.target;
-          videoElement.play();
-        } else {
-          const videoElement = entry.target;
-          videoElement.pause();
-        }
+        entry.isIntersecting ? entry.target.play() : entry.target.pause();
       });
     };
 
@@ -89,42 +122,21 @@ function App() {
       handleIntersection,
       observerOptions
     );
+    videoRefs.current.forEach((videoRef) => observer.observe(videoRef));
 
-    // We observe each video reference to trigger play/pause
-    videoRefs.current.forEach((videoRef) => {
-      observer.observe(videoRef);
-    });
-
-    // We disconnect the observer when the component is unmounted
-    return () => {
-      observer.disconnect();
-    };
-  }, [videos]);
-
-  // This function handles the reference of each video
-  const handleVideoRef = (index) => (ref) => {
-    videoRefs.current[index] = ref;
-  };
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="app">
       <div className="container">
         <TopNavbar className="top-navbar" />
-        {/* Here we map over the videos array and create VideoCard components */}
-        {videos.map((video, index) => (
+        {videoUrls.map((video, index) => (
           <VideoCard
             key={index}
-            username={video.username}
-            description={video.description}
-            song={video.song}
-            likes={video.likes}
-            saves={video.saves}
-            comments={video.comments}
-            shares={video.shares}
-            url={video.url}
-            profilePic={video.profilePic}
-            setVideoRef={handleVideoRef(index)}
-            autoplay={index === 0}
+            {...video}
+            setVideoRef={(ref) => (videoRefs.current[index] = ref)}
+            autoplay={index === currentIndex}
           />
         ))}
         <BottomNavbar className="bottom-navbar" />
