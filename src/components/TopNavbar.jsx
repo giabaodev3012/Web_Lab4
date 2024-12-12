@@ -4,12 +4,12 @@ import { faTv, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const TopNavbar = () => {
   return (
-    <div classname="top-navbar">
-      <FontAwesomeIcon icon={faTv} classname="icon" />
+    <div className="top-navbar">
+      <FontAwesomeIcon icon={faTv} className="icon" />
       <h2>
         Following | <span>For You</span>
       </h2>
-      <FontAwesomeIcon icon={faSearch} classname="icon" />
+      <FontAwesomeIcon icon={faSearch} className="icon" />
     </div>
   );
 };

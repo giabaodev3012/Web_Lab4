@@ -19,7 +19,7 @@ const videoUrls = [
   },
   {
     url: require("./videos/video2.mp4"),
-    profilePic: require("./photos/meomeo2.jpg"),
+    profilePic: require("./photos/meomeo1.jpg"),
     username: "dailydotdev",
     description:
       "Every developer brain @francesco.ciulla #developerjokes #programming #programminghumor #programmingmemes",
