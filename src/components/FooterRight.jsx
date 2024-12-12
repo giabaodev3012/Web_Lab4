@@ -7,10 +7,20 @@ import {
   faCommentDots,
   faBookmark,
   faShare,
+  faVolumeUp,
+  faVolumeMute,
 } from "@fortawesome/free-solid-svg-icons";
 import "./FooterRight.css";
 
-function FooterRight({ likes, comments, saves, shares, profilePic }) {
+function FooterRight({
+  likes,
+  comments,
+  saves,
+  shares,
+  profilePic,
+  isMuted,
+  onMuteToggle,
+}) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [userAddIcon, setUserAddIcon] = useState(faCirclePlus);
@@ -103,6 +113,14 @@ function FooterRight({ likes, comments, saves, shares, profilePic }) {
         />
         <p>{shares}</p>
       </div>
+
+      <div className="sidebar-icon" onClick={onMuteToggle}>
+        <FontAwesomeIcon
+          icon={isMuted ? faVolumeMute : faVolumeUp}
+          style={{ width: "35px", height: "35px", color: "white" }}
+        />
+      </div>
+
       <div className="sidebar-icon record">
         <img
           src="https://static.thenounproject.com/png/934821-200.png"
